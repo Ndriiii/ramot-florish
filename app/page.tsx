@@ -12,14 +12,14 @@ type Product = {
 }
 
 const PRODUCTS: Product[] = [
-    { id: 1, name: "Papan Jakarta", price: "Rp 10.000", desc: "Gataula", image: "/Papan Jakarta.jpeg"},
-    { id: 2, name: "Papan Jakarta", price: "Rp 10.000", desc: "Gataula", image: "/Jakarta Jumbo.jpeg"},
+    { id: 1, name: "Papan Jakarta", price: "Rp 10.000", desc: "Gataula", image: "/PapanJakarta.jpeg"},
+    { id: 2, name: "Papan Jakarta", price: "Rp 10.000", desc: "Gataula", image: "/JakartaJumbo.jpeg"},
     { id: 3, name: "Papan Jakarta", price: "Rp 10.000", desc: "Gataula", image: "/Jumbo.jpeg"},
-    { id: 4, name: "Papan Jakarta", price: "Rp 10.000", desc: "Gataula", image: "/Jakarta Fresh.jpeg"},
-    { id: 5, name: "Papan Jakarta", price: "Rp 10.000", desc: "Gataula", image: "/Mahkota 1.jpeg"},
-    { id: 6, name: "Papan Jakarta", price: "Rp 10.000", desc: "Gataula", image: "/Mahkota 3.jpeg"},
-    { id: 7, name: "Papan Jakarta", price: "Rp 10.000", desc: "Gataula", image: "/Mahkota 4.jpeg"},
-    { id: 8, name: "Papan Jakarta", price: "Rp 10.000", desc: "Gataula", image: "/Mahkota 4B.jpeg"},
+    { id: 4, name: "Papan Jakarta", price: "Rp 10.000", desc: "Gataula", image: "/JakartaFresh.jpeg"},
+    { id: 5, name: "Papan Jakarta", price: "Rp 10.000", desc: "Gataula", image: "/Mahkota1.jpeg"},
+    { id: 6, name: "Papan Jakarta", price: "Rp 10.000", desc: "Gataula", image: "/Mahkota3.jpeg"},
+    { id: 7, name: "Papan Jakarta", price: "Rp 10.000", desc: "Gataula", image: "/Mahkota4.jpeg"},
+    { id: 8, name: "Papan Jakarta", price: "Rp 10.000", desc: "Gataula", image: "/Mahkota4B.jpeg"},
 ];
 
 export default function Home() {
