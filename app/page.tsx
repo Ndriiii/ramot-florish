@@ -12,14 +12,15 @@ type Product = {
 }
 
 const PRODUCTS: Product[] = [
-    { id: 1, name: "Papan Jakarta", price: "Rp 10.000", desc: "Gataula", image: "/PapanJakarta.jpeg"},
-    { id: 2, name: "Papan Jakarta", price: "Rp 10.000", desc: "Gataula", image: "/JakartaJumbo.jpeg"},
-    { id: 3, name: "Papan Jakarta", price: "Rp 10.000", desc: "Gataula", image: "/Jumbo.jpeg"},
-    { id: 4, name: "Papan Jakarta", price: "Rp 10.000", desc: "Gataula", image: "/JakartaFresh.jpeg"},
-    { id: 5, name: "Papan Jakarta", price: "Rp 10.000", desc: "Gataula", image: "/Mahkota1.jpeg"},
-    { id: 6, name: "Papan Jakarta", price: "Rp 10.000", desc: "Gataula", image: "/Mahkota3.jpeg"},
-    { id: 7, name: "Papan Jakarta", price: "Rp 10.000", desc: "Gataula", image: "/Mahkota4.jpeg"},
-    { id: 8, name: "Papan Jakarta", price: "Rp 10.000", desc: "Gataula", image: "/Mahkota4B.jpeg"},
+    { id: 1, name: "Papan Jakarta", price: "Rp 650.000", desc: "Gataula", image: "/PapanJakarta.jpeg"},
+    { id: 2, name: "Papan Jakarta Jumbo Mahkota 4", price: "Rp 1.500.000", desc: "Gataula", image: "/JakartaJumbo.jpeg"},
+    { id: 3, name: "Papan Bunga Jumbo", price: "Rp 300.000", desc: "Gataula", image: "/Jumbo.jpeg"},
+    { id: 4, name: "Papan Jakarta Mahkota Bunga Fresh", price: "Rp 900.000", desc: "Gataula", image: "/JakartaFresh.jpeg"},
+    { id: 5, name: "Papan Bunga Mahkota 1", price: "Rp 400.000", desc: "Gataula", image: "/Mahkota1.jpeg"},
+    { id: 6, name: "Papan Bunga Duka Cita 3 Mahkota", price: "Rp 600.000", desc: "Gataula", image: "/Mahkota3.jpeg"},
+    { id: 7, name: "Papan Bunga Duka Cita 4 Mahkota", price: "Rp 700.000", desc: "Gataula", image: "/Mahkota4.jpeg"},
+    { id: 8, name: "Papan Bunga Mahkota 4", price: "Rp 700.000", desc: "Gataula", image: "/Mahkota4B.jpeg"},
+    { id: 9, name: "Papan Printing", price: "Rp 1.500.000", desc: "Gataula", image: "/Printing.jpeg"}
 ];
 
 export default function Home() {
@@ -82,26 +83,28 @@ return (
             </div>
         </section>
 
-        <section id = "catalog" className = "relative py-24 overflow-hidden">
-            <div className = "absolute inset-0 bg-[#626262] opacity-10 pointer-events-none"></div>
-            <div className = "relative z-10 max-w-6xl mx-auto px-6">
-                <SectionTitle title = "Catalogue" subtitle = "Find the Perfect Board"/>
-                <div className = "mt-20 space-y-24 md:pace-y-32">
-                    {PRODUCTS.slice(0, visibleCount).map((product, index) => (
+        <section id="catalog" className="relative py-24 overflow-hidden">
+            <div className="absolute inset-0 bg-[#626262] opacity-10 pointer-events-none"></div>
+            <div className="relative z-10 max-w-6xl mx-auto px-6">
+                <SectionTitle title="Catalogue" subtitle="Find the Perfect Board"/>
+                
+                {/* THIS IS THE GRID WRAPPER: 1 column on mobile, 2 columns side-by-side on desktop */}
+                <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16">
+                    {PRODUCTS.slice(0, visibleCount).map((product) => (
                         <ProductCard
-                            key = {product.id}
-                            product = {product}
-                            isReverse = {(index + 1) % 2 === 0}
-                            onClick= {() => setSelectedProduct(product)}
+                            key={product.id}
+                            product={product}
+                            // Removed isReverse because grids look best uniformly stacked
+                            onClick={() => setSelectedProduct(product)}
                         />
                     ))}
                 </div>
 
                 {visibleCount < PRODUCTS.length && (
-                    <div className = "text-center mt-24">
+                    <div className="text-center mt-24">
                         <button
-                            onClick = {() => setVisibleCount((p) => p + 4)}
-                            className = "px-10 py-4 border-2 border-[#171717] text-[#171717] rounded-full font-bold uppercase tracking-widest hover:bg-[#171717] hover:text-white transition-all active:scale-95"
+                            onClick={() => setVisibleCount((p) => p + 4)}
+                            className="px-10 py-4 border-2 border-[#171717] text-[#171717] rounded-full font-bold uppercase tracking-widest hover:bg-[#171717] hover:text-white transition-all active:scale-95"
                         >
                             Load More
                         </button>
@@ -151,8 +154,6 @@ return (
                         <p className = "text-gray-600 leading-relaxed max-w-md pb-4">
                             Located in the heart of the city. We provide the highest quality floral arrangements for your special moments. 
                         </p>
-
-                        {/* New Contact Info List */}
                         <div className = "space-y-4 text-gray-700 font-medium w-full max-w-sm">
                             <div className = "flex items-center gap-4 justify-center md:justify-start">
                                 <div className = "p-2 bg-white rounded-full shadow-sm text-green-700">
@@ -232,29 +233,39 @@ function SectionTitle({ title, subtitle } : { title: string, subtitle: string })
     );
 }
 
-function ProductCard({ product, isReverse, onClick } : { product: Product, isReverse: boolean, onClick: () => void }) {
+function ProductCard({ product, onClick } : { product: Product, onClick: () => void }) {
     return (
-        <div className = {`group flex flex-col md:flex-row items-center gap-8 md:gap-20 ${isReverse ? "md:flex-row-reverse" : ""}`}>
-            <div className = "w-full md:w-1/2 flex justify-center">
-                <div className = "w-3/4 max-w-sm overflow-hidden rounded-2xl shadow-lg bg-white">
-                    <Image 
-                        src = {product.image}
-                        alt = {product.name}
-                        width = {1260}
-                        height = {1272}
-                        className = "w-full h-auto transition-transform duration-500 hover:scale-105" 
-                        sizes = "(max-width: 768px) 100vw, 50vw"
-                    />
-                </div>
+        <div className="group flex flex-col items-center space-y-5 h-full">
+            
+            {/* 1. The Wrapper: Removed bg-white, shadow-lg, and overflow-hidden. 
+                   Now it's just an invisible bounding box to keep the grid perfectly aligned. */}
+            <div 
+                onClick={onClick}
+                className="relative w-full aspect-[3/2] cursor-pointer"
+            >
+                {/* 2. The Image: Removed p-4. Added a subtle drop-shadow directly to the image 
+                       so it pops off the background without needing a white card behind it. */}
+                <Image 
+                    src={product.image}
+                    alt={product.name}
+                    fill
+                    className="object-contain drop-shadow-md rounded-xl transition-transform duration-500 group-hover:scale-105" 
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                />
             </div>
 
-            <div className = "w-full md:w-1/2 text-center md:text-left space-y-4">
-                <h3 className = "text-3xl font-sansita text-[#171717] group-hover:text-green-800 transition-colors">
+            {/* 3. Text Section: Slightly tightened the spacing (space-y-2 instead of space-y-3) for a sleeker look */}
+            <div className="w-full text-center space-y-2 px-4 flex-grow">
+                <h3 
+                    onClick={onClick}
+                    className="text-2xl md:text-3xl font-sansita text-[#171717] group-hover:text-green-800 transition-colors cursor-pointer line-clamp-2"
+                >
                     {product.name}
                 </h3>
-                <p className = "text-2xl font-bold text-gray-800"> {product.price} </p>
-                <p className = "text-gray-600 leading-relaxed text-lg line-clamp-3 md:line-clamp-none"> {product.desc} </p>
-                <div onClick = {onClick} className="inline-block text-green-800 font-semibold pt-2 cursor-pointer hover:underline"> View Details </div>
+                <p className="text-xl font-bold text-gray-800"> {product.price} </p>
+                <div onClick={onClick} className="inline-block text-green-800 font-semibold pt-1 cursor-pointer hover:underline"> 
+                    View Details 
+                </div>
             </div>
         </div>
     );
