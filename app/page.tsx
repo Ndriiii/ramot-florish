@@ -11,16 +11,17 @@ type Product = {
 }
 
 const PRODUCTS: Product[] = [
-    { id: 1, name: "Bunga Salib", price: "Rp 500.000", images: ["/Salib.jpeg", "/Salib1.jpeg", "/Salib2.jpeg", "/Salib3.jpeg", "/Salib4.jpeg", "/Salib5.jpeg", "/Salib6.jpeg"]},
-    { id: 2, name: "Papan Jakarta", price: "Rp 650.000", images: ["/PapanJakarta.jpeg"]},
-    { id: 3, name: "Papan Jakarta Jumbo Mahkota 4", price: "Rp 1.500.000", images: ["/JakartaJumbo.jpeg"]},
-    { id: 4, name: "Papan Bunga Jumbo", price: "Rp 300.000", images: ["/Jumbo.jpeg"]},
-    { id: 5, name: "Papan Jakarta Mahkota Bunga Fresh", price: "Rp 900.000", images: ["/JakartaFresh.jpeg"]},
-    { id: 6, name: "Papan Bunga Mahkota 1", price: "Rp 400.000", images: ["/Mahkota1.jpeg"]},
-    { id: 7, name: "Papan Bunga Duka Cita 3 Mahkota", price: "Rp 600.000", images: ["/Mahkota3.jpeg"]},
-    { id: 8, name: "Papan Bunga Duka Cita 4 Mahkota", price: "Rp 700.000", images: ["/Mahkota4.jpeg"]},
-    { id: 9, name: "Papan Bunga Mahkota 4", price: "Rp 700.000", images: ["/Mahkota4B.jpeg"]},
-    { id: 10, name: "Papan Printing", price: "Rp 1.500.000", images: ["/Printing.jpeg"]}
+    { id: 1, name: "Bunga Salib", price: "Rp 500.000", images: ["/Salib.webp", "/Salib1.webp", "/Salib2.webp", "/Salib3.webp", "/Salib4.webp", "/Salib5.webp", "/Salib6.webp"]},
+    { id: 2, name: "Papan Jakarta", price: "Rp 650.000", images: ["/PapanJakarta.webp"]},
+    { id: 3, name: "Papan Jakarta Jumbo Mahkota 4", price: "Rp 1.500.000", images: ["/JakartaJumbo.webp"]},
+    { id: 4, name: "Papan Bunga Jumbo", price: "Rp 300.000", images: ["/Jumbo.webp"]},
+    { id: 5, name: "Papan Jakarta Mahkota Bunga Fresh", price: "Rp 900.000", images: ["/JakartaFresh.webp"]},
+    { id: 6, name: "Papan Bunga Mahkota 1", price: "Rp 400.000", images: ["/Mahkota1.webp"]},
+    { id: 7, name: "Papan Bunga Duka Cita 3 Mahkota", price: "Rp 600.000", images: ["/Mahkota3.webp"]},
+    { id: 8, name: "Papan Bunga Duka Cita 4 Mahkota", price: "Rp 700.000", images: ["/Mahkota4.webp"]},
+    { id: 9, name: "Papan Bunga Mahkota 4", price: "Rp 700.000", images: ["/Mahkota4B.webp"]},
+    { id: 10, name: "Papan Bunga Mahkota 5", price: "Rp 800.000", images: ["/Mahkota5.webp"]},
+    { id: 11, name: "Papan Printing", price: "Rp 1.500.000", images: ["/Printing.webp"]}
 ];
 
 export default function Home() {
@@ -38,7 +39,7 @@ return (
                         Ramot Florist
                 </button>
                 <div className = "hidden md:flex items-center gap-8 text-sm font-bold uppercase tracking-widest text-gray-500">
-                    <button onClick = {() => window.scrollTo({top: 0, behavior: 'smooth'})} className = "hover:text-[#171717] hover:cursor-pointer transition-colors"> Home </button>
+                    <button onClick = {() => window.scrollTo({top: 0, behavior: 'smooth'})} className = "hover:text-[#171717] hover:cursor-pointer transition-colors"> Beranda </button>
                     <button onClick={() => document.getElementById('catalog')?.scrollIntoView({ behavior: 'smooth' })} className="hover:text-[#171717] hover:cursor-pointer transition-colors"> Katalog </button>
                     <button onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })} className="hover:text-[#171717] hover:cursor-pointer transition-colors"> Kontak </button>
                     <button onClick={() => document.getElementById('location')?.scrollIntoView({ behavior: 'smooth' })} className="hover:text-[#171717] hover:cursor-pointer transition-colors"> Lokasi </button>
@@ -47,45 +48,46 @@ return (
                     href = "https://wa.me/6282191295376"
                     target = "_blank"
                     className = "px-5 py-2.5 bg-[#171717] text-white text-sm font-bold rounded-full hover:bg-gray-800 transition shadow-lg active:scale-95">
-                        Order Now
+                        Pesan Sekarang
                 </a>
             </div>
         </nav>
         <section id = "home" className = "relative min-h-[90vh] flex flex-col justify-center px-6 md:px-20 py-20 overflow-hidden">
             <div className = "max-w-7xl mx-auto w-full grid md:grid-cols-2 gap-12 items-center">
                 <div className = "order-2 md:order-1 space-y-8 z-10 text-center md:text-left">
-                    <h1 className = "text-6xl md:text-8xl font-sansita leading-[1.1] drop-shadow-sm"
-                        >
+                    <h1 className = "text-6xl md:text-8xl font-sansita leading-[1.1] drop-shadow-sm">
                         Ramot Florist
                     </h1>
                     <p className = "text-lg md:text-xl text-gray-600 max-w-lg mx-auto md:mx-0">
-                        Ramot florist merupakan toko papan bunga yang terletak di Medan dan berdiri pada tahun 2020. 
+                        📍 Terletak di Medan | 🗓 Melayani sejak 2020.
+                        Menyediakan berbagai pilihan papan bunga ucapan (Wedding, Grand Opening, Duka Cita, dll) dengan desain eksklusif dan layanan pengiriman tepat waktu. Hubungi kami untuk pesanan yang berkesan!
                     </p>
-                    <button
-                        onClick = {() => document.getElementById('catalog')?.scrollIntoView({ behavior: 'smooth' })}
-                        className = "group relative inline-flex items-center justify-center px-8 py-3 bg-[#171717] text-[#EFE8E8] rounded-full font-semibold overflow-hidden transition-transform active:scale-95 shadow-xl  hover:cursor-pointer">   
-                    <span className = "relative z-10 group-hover:text-white transition-colors"> Explore Collection </span>
-                    <div className = "absolute inset-0 bg-gray-800 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"> </div>
-                    </button>
+                    <div className = "flex justify-center w-full max-w-lg mx-auto md:mx-0">
+                        <button
+                            onClick = {() => document.getElementById('catalog')?.scrollIntoView({ behavior: 'smooth' })}
+                            className = "group relative inline-flex items-center justify-center px-8 py-3 bg-[#171717] text-[#EFE8E8] rounded-full font-semibold overflow-hidden transition-transform active:scale-95 shadow-xl hover:cursor-pointer"
+                        >   
+                            <span className = "relative z-10 group-hover:text-white transition-colors">Jelajah Koleksi</span>
+                            <div className = "absolute inset-0 bg-gray-800 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></div>
+                        </button>
+                    </div>
                 </div>
                 <div className = "order-1 md:order-2 flex justify-center relative w-full">
-                    <div className = "relative w-full max-w-lg md:max-w-2xl aspect-1260/917 rounded-t-[100px] border-4 border-white shadow-2xl overflow-hidden bg-gray-200">
-                        <div className = "absolute inset-0 flex items-center justify-center text-gray-500"> Intro Image </div>
+                    <div className = "relative w-full max-w-62.5 md:max-w-95 aspect-4/5 rounded-t-[150px] border-4 border-white shadow-2xl overflow-hidden bg-white">
                         <Image 
-                            src = "/Hero.jpeg" 
-                            alt = "Ramot Florist Storefront" 
+                            src="/Hero.webp" 
+                            alt="Ramot Florist Storefront" 
                             fill 
-                            className = "object-cover" 
+                            className="object-cover" 
                             priority 
-                            sizes = "(max-width: 768px) 100vw, 50vw" 
+                            sizes="(max-width: 768px) 100vw, 320px" 
                         />
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id = "catalog" className = "relative py-24 overflow-hidden">
-            <div className = "absolute inset-0 bg-[#626262] opacity-10 pointer-events-none"></div>
+        <section id = "catalog" className = "relative py-24 overflow-hidden bg-[#E5DEDE]">
             <div className = "relative z-10 max-w-6xl mx-auto px-6">
                 <SectionTitle title = "Catalogue" subtitle = "Find the Perfect Board"/>
                 <div className = "mt-16 grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16">
@@ -107,7 +109,7 @@ return (
                             onClick = {() => setVisibleCount((p) => p + 4)}
                             className = "px-10 py-4 border-2 border-[#171717] text-[#171717] rounded-full font-bold uppercase tracking-widest hover:bg-[#171717] hover:text-white transition-all active:scale-95"
                         >
-                            Load More
+                            Muat Lebih Banyak
                         </button>
                     </div>
                 )}
@@ -136,7 +138,7 @@ return (
                 <div className = "grid md:grid-cols-2 gap-12 items-center">
                     <div className = "w-full h-64 md:h-80 rounded-2xl overflow-hidden shadow-lg border-2 border-white/50 bg-white">
                         <iframe 
-                            src = "https://www.google.com/maps/embed?pb=!3m2!1sen!2sid!4v1772018909429!5m2!1sen!2sid!6m8!1m7!1sH_CCbMaVOt_IOCZjM7m0bA!2m2!1d3.529904168466145!2d98.61997906953339!3f272.7972766462385!4f-10.416460174378727!5f0.7820865974627469https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1212.433024880907!2d98.6197138226707!3d3.530545860542313!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30312f2315f824a3%3A0xc7deb6cd04ee2b55!2sTukangPerabotMedan.com!5e0!3m2!1sen!2sid!4v1772019128104!5m2!1sen!2sid" 
+                            src = "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3982.25099702366!2d98.6197!3d3.5294!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x303125776c6e8601%3A0xa83c925dc35f9898!2sJl.%20Setia%20Budi%20No.32%2C%20Simpang%20Selayang%2C%20Kec.%20Medan%20Tuntungan%2C%20Kota%20Medan%2C%20Sumatera%20Utara%2020135!5e0!3m2!1sen!2sid!4v1772374151826!5m2!1sen!2sid"
                             width = "100%" 
                             height = "100%" 
                             style = {{ border: 0 }} 
@@ -157,7 +159,7 @@ return (
                                 <div className = "p-2 bg-white rounded-full shadow-sm text-green-700">
                                     <svg className = "w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.242-4.243a8 8 0 1111.314 0z"/><path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                                 </div>
-                                <span className = "text-left">Jl. Setia Budi, Simpang Selayang, Kec. Medan Tuntungan, Kota Medan, Sumatera Utara 20135</span>
+                                <span className = "text-left"> Jl. Setia Budi No.32, Simpang Selayang, Kec. Medan Tuntungan, Kota Medan, Sumatera Utara 20135, Indonesia </span>
                             </div>
                             
                             <div className = "flex items-center gap-4 justify-center md:justify-start">
@@ -187,7 +189,7 @@ return (
                 <div className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" onClick={() => setSelectedProduct(null)}/>  
                     <div className="relative bg-[#EFE8E8] w-full max-w-4xl rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row animate-in fade-in zoom-in duration-200 max-h-[95vh] overflow-y-auto">            
                         <button onClick={() => setSelectedProduct(null)} className="absolute top-4 right-4 p-2 bg-white/80 hover:bg-white rounded-full z-20 transition shadow-sm cursor-pointer text-[#171717]"> ✕ </button>
-                        <div className="w-full md:w-1/2 relative bg-white overflow-hidden group min-h-87.5 md:min-h-125">
+                        <div className="w-full md:w-1/2 relative bg-[#E5DEDE] overflow-hidden group min-h-87.5 md:min-h-125">
                             <div 
                                 className="flex w-full h-full absolute inset-0 transition-transform duration-500 ease-in-out"
                                 style={{ transform: `translateX(-${modalImageIndex * 100}%)` }}
@@ -326,7 +328,7 @@ function ProductCard({ product, onClick } : { product: Product, onClick: () => v
                 </h3>
                 <p className = "text-xl font-bold text-gray-800"> {product.price} </p>
                 <div onClick = {onClick} className = "inline-block text-green-800 font-semibold pt-1 cursor-pointer hover:underline"> 
-                    View Details 
+                    Lihat Detail
                 </div>
             </div>
         </div>
