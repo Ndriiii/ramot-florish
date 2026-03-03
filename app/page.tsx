@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Image from "next/image";
 
 type Product = {
@@ -24,13 +24,27 @@ const PRODUCTS: Product[] = [
     { id: 11, name: "Papan Printing", price: "Rp 1.500.000", images: ["/Printing.webp"]}
 ];
 
+const getWhatsAppUrl = () => {
+    const parts = ["https://wa.me/", "628219", "1295376"];
+    return parts.join("");
+};
+
 export default function Home() {
     const [visibleCount, setVisibleCount] = useState(4);
     const [SelectedProduct, setSelectedProduct] = useState<Product | null>(null);
     const [modalImageIndex, setModalImageIndex] = useState(0);
 
+    useEffect(() => {
+        document.body.style.overflow = SelectedProduct ? "hidden" : "";
+        return () => { document.body.style.overflow = ""; };
+    }, [SelectedProduct]);
+
+    const handleKeyDown = (e: React.KeyboardEvent) => {
+        if (e.key === "Escape") setSelectedProduct(null);
+    };
+
 return (
-    <main className = "min-h-screen bg-[#EFE8E8] text-text-[#171717] font-sans selection:bg-green-200">
+    <main className = "min-h-screen bg-[#EFE8E8] text-text-[#171717] font-sans selection:bg-green-200" onKeyDown = {handleKeyDown}>
         <nav className = "fixed top-0 left-0 right-0 z-50 bg-[#EFE8E8]/80 backdrop-blur-md border-b border-gray-300/50">
             <div className = "max-w-7xl mx-auto px-6 md:px-20 h-20 flex items-center justify-between">
                 <button
@@ -45,8 +59,9 @@ return (
                     <button onClick={() => document.getElementById('location')?.scrollIntoView({ behavior: 'smooth' })} className="hover:text-[#171717] hover:cursor-pointer transition-colors"> Lokasi </button>
                 </div>
                 <a
-                    href = "https://wa.me/6282191295376"
+                    href = {getWhatsAppUrl()}
                     target = "_blank"
+                    rel = "noopener noreferrer"
                     className = "px-5 py-2.5 bg-[#171717] text-white text-sm font-bold rounded-full hover:bg-gray-800 transition shadow-lg active:scale-95">
                         Pesan Sekarang
                 </a>
@@ -118,17 +133,18 @@ return (
 
         <section id = "contact" className = "py-32 px-6 bg-[#EFE8E8] text-center">
             <div className = "max-w-3xl mx-auto space-y-8">
-                <SectionTitle title = "Custom Made" subtitle = "Tailored to your needs" />
+                <SectionTitle title = "Cara Pemesanan" subtitle = "Kontak Kami" />
                 <p className = "text-lg md:text-xl text-gray-600 leading-relaxed">
-                    Have a specific vision in mind? We accept custom-made floral arrangements and flower boards to suit any occasion perfectly. Reach out to us directly for better pricing and to discuss your unique details!
+                    Untuk membahas mengenai pemesanan, silakan hubungi kami melalui WhatsApp. Klik tombol di bawah untuk memulai percakapan dengan tim kami, dan kami akan dengan senang hati membantu Anda memilih papan bunga yang sempurna untuk acara Anda! Kami juga menerima pemesanan area sekitar Medan.
                 </p>
                 <a
-                    href = "https://wa.me/6282191295376"
+                    href = {getWhatsAppUrl()}
                     target = "_blank"
+                    rel = "noopener noreferrer"
                     className = "mt-8 inline-flex items-center gap-3 px-8 py-4 bg-green-700 text-white rounded-full font-bold hover:bg-green-600 transition-all shadow-lg hover:shadow-green-900/50 active:scale-95"
                 >
-                    <svg className = "w-6 h-6" fill = "currentColor" viewBox = "0 0 24 24"> <path d = "M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
-                    <span> Discuss Custom Order </span>
+                    <WhatsAppIcon/>
+                    <span> Diskusi Lebih Lanjut </span>
                 </a>
             </div>
         </section>
@@ -146,12 +162,13 @@ return (
                             loading = "lazy" 
                             referrerPolicy = "no-referrer-when-downgrade"
                             title = "Ramot Florist Location"
+                            sandbox = "allow-scripts allow-same-origin allow-popups"
                         ></iframe>
                     </div>    
                     <div className = "flex flex-col items-center md:items-start text-center md:text-left space-y-6">
                         <h2 className = "text-4xl md:text-5xl font-sansita"> Ramot Florist </h2>
                         <p className = "text-gray-600 leading-relaxed max-w-md pb-4">
-                            Located in the heart of the city. We provide the highest quality floral arrangements for your special moments. 
+                            Berlokasi strategis di medan untuk melayani segala kebutuhan bunga Anda. Anda dapat menemukan kami di:
                         </p>
 
                         <div className = "space-y-4 text-gray-700 font-medium w-full max-w-sm">
@@ -166,12 +183,12 @@ return (
                                 <div className = "p-2 bg-white rounded-full shadow-sm text-green-700">
                                     <svg className = "w-5 h-5" fill = "none" stroke = "currentColor" viewBox = "0 0 24 24" strokeWidth = "2"><path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                                 </div>
-                                <span className = "text-left"> hello@ramotflorist.com </span>
+                                <a href = "mailto:ramotflorist@gmail.com" className = "text-left hover:underline"> ramotflorist@gmail.com </a>
                             </div>
 
                             <div className = "flex items-center gap-4 justify-center md:justify-start">
                                 <div className = "p-2 bg-white rounded-full shadow-sm text-green-700">
-                                    <svg className = "w-5 h-5" fill="currentColor" viewBox="0 0 24 24"> <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                                    <WhatsAppIcon/>
                                 </div>
                                 <span className = "text-left"> +62 821-9129-5376 </span>
                             </div>
@@ -185,72 +202,86 @@ return (
         </footer>
 
         {SelectedProduct && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8">
-                <div className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" onClick={() => setSelectedProduct(null)}/>  
-                    <div className="relative bg-[#EFE8E8] w-full max-w-4xl rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row animate-in fade-in zoom-in duration-200 max-h-[95vh] overflow-y-auto">            
-                        <button onClick={() => setSelectedProduct(null)} className="absolute top-4 right-4 p-2 bg-white/80 hover:bg-white rounded-full z-20 transition shadow-sm cursor-pointer text-[#171717]"> ✕ </button>
-                        <div className="w-full md:w-1/2 relative bg-[#E5DEDE] overflow-hidden group min-h-87.5 md:min-h-125">
-                            <div 
-                                className="flex w-full h-full absolute inset-0 transition-transform duration-500 ease-in-out"
-                                style={{ transform: `translateX(-${modalImageIndex * 100}%)` }}
-                            >
-                                {SelectedProduct.images.map((img, idx) => (
-                                    <div key={idx} className="relative w-full h-full shrink-0">
-                                        <Image 
-                                            src={img} 
-                                            alt={`${SelectedProduct.name} - Image ${idx + 1}`} 
-                                            fill 
-                                            className="object-contain p-8 drop-shadow-xl"
-                                            sizes="(max-width: 768px) 100vw, 50vw"
-                                        />
-                                    </div>
-                                ))}
-                            </div>
-                            {SelectedProduct.images.length > 1 && (
-                                <>
-                                    <button 
-                                        onClick={() => setModalImageIndex((p) => (p - 1 + SelectedProduct.images.length) % SelectedProduct.images.length)} 
-                                        className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-3 rounded-full shadow-lg z-10 transition cursor-pointer text-gray-800"
-                                    >
-                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
-                                    </button>
-                                    <button 
-                                        onClick={() => setModalImageIndex((p) => (p + 1) % SelectedProduct.images.length)} 
-                                        className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-3 rounded-full shadow-lg z-10 transition cursor-pointer text-gray-800"
-                                    >
-                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
-                                    </button>
-                                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
-                                        {SelectedProduct.images.map((_, idx) => (
-                                            <div key={idx} className={`w-2 h-2 rounded-full transition-colors ${idx === modalImageIndex ? 'bg-green-700' : 'bg-gray-300'}`} />
-                                        ))}
-                                    </div>
-                                </>
-                            )}
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8"
+                role = "dialog"
+                aria-model = "true"
+                aria-label = {`Product detail: ${SelectedProduct.name}`}
+            >
+                <div className = "absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
+                    onClick={() => setSelectedProduct(null)}
+                    aria-hidden = "true"
+                    />  
+                <div className = "relative bg-[#EFE8E8] w-full max-w-4xl rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row animate-in fade-in zoom-in duration-200 max-h-[95vh] overflow-y-auto">            
+                    <button onClick = {() => setSelectedProduct(null)} className = "absolute top-4 right-4 p-2 bg-white/80 hover:bg-white rounded-full z-20 transition shadow-sm cursor-pointer text-[#171717]"> ✕ </button>
+                    <div className = "w-full md:w-1/2 relative bg-[#E5DEDE] overflow-hidden group min-h-87.5 md:min-h-125">
+                        <div 
+                            className = "flex w-full h-full absolute inset-0 transition-transform duration-500 ease-in-out"
+                            style = {{ transform: `translateX(-${modalImageIndex * 100}%)` }}
+                        >
+                            {SelectedProduct.images.map((img, idx) => (
+                                <div key = {idx} className="relative w-full h-full shrink-0">
+                                    <Image 
+                                        src = {img} 
+                                        alt = {`${SelectedProduct.name} - Image ${idx + 1}`} 
+                                        fill 
+                                        className = "object-contain p-8 drop-shadow-xl"
+                                        sizes = "(max-width: 768px) 100vw, 50vw"
+                                    />
+                                </div>
+                            ))}
                         </div>
-                        <div className="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center space-y-6">
-                            <div>
-                                <h2 className="text-4xl font-sansita text-[#171717] mb-2">{SelectedProduct.name}</h2>
-                                <div className="w-12 h-1 bg-green-800 rounded-full mb-4"></div>
-                                <p className="text-3xl font-bold text-green-800">{SelectedProduct.price}</p>
-                            </div>
-                            <a href="https://wa.me/6282191295376" target="_blank" className="inline-flex items-center justify-center gap-2 mt-4 px-8 py-4 bg-green-700 text-white rounded-full font-bold hover:bg-green-600 transition shadow-lg active:scale-95 w-full md:w-auto">
-                                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"> <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
-                                Order via WhatsApp
-                            </a>
-                        </div>
+                        {SelectedProduct.images.length > 1 && (
+                            <>
+                                <button 
+                                    onClick = {() => setModalImageIndex((p) => (p - 1 + SelectedProduct.images.length) % SelectedProduct.images.length)} 
+                                    className = "absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-3 rounded-full shadow-lg z-10 transition cursor-pointer text-gray-800"
+                                >
+                                    <svg className = "w-5 h-5" fill = "none" stroke = "currentColor" viewBox="0 0 24 24"><path strokeLinecap = "round" strokeLinejoin = "round" strokeWidth = {2} d = "M15 19l-7-7 7-7" /></svg>
+                                </button>
+                                <button 
+                                    onClick = {() => setModalImageIndex((p) => (p + 1) % SelectedProduct.images.length)} 
+                                    className = "absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-3 rounded-full shadow-lg z-10 transition cursor-pointer text-gray-800"
+                                >
+                                    <svg className = "w-5 h-5" fill = "none" stroke = "currentColor" viewBox = "0 0 24 24"><path strokeLinecap = "round" strokeLinejoin = "round" strokeWidth = {2} d = "M9 5l7 7-7 7" /></svg>
+                                </button>
+                                <div className = "absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+                                    {SelectedProduct.images.map((_, idx) => (
+                                        <div key = {idx} className = {`w-2 h-2 rounded-full transition-colors ${idx === modalImageIndex ? 'bg-green-700' : 'bg-gray-300'}`} />
+                                    ))}
+                                </div>
+                            </>
+                        )}
                     </div>
+                    <div className = "w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center space-y-6">
+                        <div>
+                            <h2 className = "text-4xl font-sansita text-[#171717] mb-2"> {SelectedProduct.name} </h2>
+                            <div className = "w-12 h-1 bg-green-800 rounded-full mb-4"></div>
+                            <p className = "text-3xl font-bold text-green-800"> {SelectedProduct.price} </p>
+                        </div>
+                        <a href = {getWhatsAppUrl()} target = "_blank" className = "inline-flex items-center justify-center gap-2 mt-4 px-8 py-4 bg-green-700 text-white rounded-full font-bold hover:bg-green-600 transition shadow-lg active:scale-95 w-full md:w-auto">
+                            <WhatsAppIcon/>
+                            Order via WhatsApp
+                        </a>
+                    </div>
+                </div>
             </div>
         )}  
     </main>
 );
 }
 
+function WhatsAppIcon() {
+    return (
+        <svg className = "w-5 h-5" fill = "currentColor" viewBox = "0 0 24 24" aria-hidden = "true">
+            <path d = "M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z" />
+        </svg>
+    );
+}
+
 function SectionTitle({ title, subtitle } : { title: string, subtitle: string }) {
     return (
         <div className = "text-center space-y-2">
-            <h2 className = "text-4xl md:text-5xl font-sansita text-[#171717]"
-                style = {{ WebkitTextStroke: "1px #FDFDFD" }}>
+            <h2 className = "text-4xl md:text-5xl font-sansita text-[#171717]">
                 {title}
             </h2>
             <div className = "h-1 w-20 bg-[#171717] mx-auto rounded-full"></div>
@@ -277,6 +308,10 @@ function ProductCard({ product, onClick } : { product: Product, onClick: () => v
             <div 
                 onClick = {onClick}
                 className = "relative w-full aspect-3/2 cursor-pointer rounded-xl overflow-hidden"
+                role = "button"
+                tabIndex = {0}
+                onKeyDown = {(e) => e.key === "Enter" && onClick()}
+                aria-label = {`View details for ${product.name}`}
             >
                 <div 
                     className = "flex w-full h-full transition-transform duration-500 ease-in-out"
