@@ -12,13 +12,13 @@ type Product = {
 
 const PRODUCTS: Product[] = [
     { id: 1, name: "Bunga Salib", price: "Rp 500.000", images: ["/Salib.webp", "/Salib1.webp", "/Salib2.webp", "/Salib3.webp", "/Salib4.webp", "/Salib5.webp", "/Salib6.webp"]},
-    { id: 2, name: "Papan Jakarta", price: "Rp 650.000", images: ["/PapanJakarta.webp"]},
-    { id: 3, name: "Papan Jakarta Jumbo Mahkota 4", price: "Rp 1.500.000", images: ["/JakartaJumbo.webp"]},
-    { id: 4, name: "Papan Bunga Jumbo", price: "Rp 300.000", images: ["/Jumbo.webp"]},
-    { id: 5, name: "Papan Jakarta Mahkota Bunga Fresh", price: "Rp 900.000", images: ["/JakartaFresh.webp"]},
+    { id: 2, name: "Papan Bunga Jumbo", price: "Rp 300.000", images: ["/Jumbo.webp"]},
+    { id: 3, name: "Papan Jakarta", price: "Rp 650.000", images: ["/PapanJakarta.webp"]},
+    { id: 4, name: "Papan Jakarta Mahkota Bunga Fresh", price: "Rp 900.000", images: ["/JakartaFresh.webp"]},
+    { id: 5, name: "Papan Jakarta Jumbo Mahkota 4", price: "Rp 1.500.000", images: ["/JakartaJumbo.webp"]},
     { id: 6, name: "Papan Bunga Mahkota 1", price: "Rp 400.000", images: ["/Mahkota1.webp"]},
-    { id: 7, name: "Papan Bunga Duka Cita 3 Mahkota", price: "Rp 600.000", images: ["/Mahkota3.webp"]},
-    { id: 8, name: "Papan Bunga Duka Cita 4 Mahkota", price: "Rp 700.000", images: ["/Mahkota4.webp"]},
+    { id: 7, name: "Papan Bunga 3 Mahkota", price: "Rp 600.000", images: ["/Mahkota3.webp"]},
+    { id: 8, name: "Papan Bunga 4 Mahkota", price: "Rp 700.000", images: ["/Mahkota4.webp"]},
     { id: 9, name: "Papan Bunga Mahkota 4", price: "Rp 700.000", images: ["/Mahkota4B.webp"]},
     { id: 10, name: "Papan Bunga Mahkota 5", price: "Rp 800.000", images: ["/Mahkota5.webp"]},
     { id: 11, name: "Papan Printing", price: "Rp 1.500.000", images: ["/Printing.webp"]}
@@ -33,14 +33,26 @@ export default function Home() {
     const [visibleCount, setVisibleCount] = useState(4);
     const [SelectedProduct, setSelectedProduct] = useState<Product | null>(null);
     const [modalImageIndex, setModalImageIndex] = useState(0);
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
     useEffect(() => {
-        document.body.style.overflow = SelectedProduct ? "hidden" : "";
+        document.body.style.overflow = (SelectedProduct || mobileMenuOpen) ? "hidden" : "";
         return () => { document.body.style.overflow = ""; };
-    }, [SelectedProduct]);
+    }, [SelectedProduct, mobileMenuOpen]);
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
-        if (e.key === "Escape") setSelectedProduct(null);
+        if (e.key === "Escape") {
+            setSelectedProduct(null);
+            setMobileMenuOpen(false);
+        }
+    };
+
+    const scrollTo = (id?: string) => {
+        setMobileMenuOpen(false);
+        setTimeout(() => {
+            if (id) document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+            else window.scrollTo({ top: 0, behavior: "smooth" });
+        }, 10);
     };
 
 return (
@@ -48,54 +60,105 @@ return (
         <nav className = "fixed top-0 left-0 right-0 z-50 bg-[#EFE8E8]/80 backdrop-blur-md border-b border-gray-300/50">
             <div className = "max-w-7xl mx-auto px-6 md:px-20 h-20 flex items-center justify-between">
                 <button
-                    onClick = {() => window.scrollTo({top: 0, behavior: 'smooth'})}
-                    className = "text-2xl md:text-3xl font-sansita font-bold text-[#171717] hover:opacity-80 transition-opacity">
-                        Ramot Florist
-                </button>
-                <div className = "hidden md:flex items-center gap-8 text-sm font-bold uppercase tracking-widest text-gray-500">
+                        onClick={() => scrollTo()}
+                        className="hover:opacity-80 transition-opacity flex items-center"
+                        aria-label="Ramot Florist - Beranda"
+                    >
+                        <Image
+                            src="/logo.png"
+                            alt="Ramot Florist Logo"
+                            width={52}
+                            height={52}
+                            className="object-contain"
+                            priority
+                        />
+                    </button>
+                <div className = "hidden lg:flex items-center gap-8 text-sm font-bold uppercase tracking-widest text-gray-500">
                     <button onClick = {() => window.scrollTo({top: 0, behavior: 'smooth'})} className = "hover:text-[#171717] hover:cursor-pointer transition-colors"> Beranda </button>
-                    <button onClick={() => document.getElementById('catalog')?.scrollIntoView({ behavior: 'smooth' })} className="hover:text-[#171717] hover:cursor-pointer transition-colors"> Katalog </button>
-                    <button onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })} className="hover:text-[#171717] hover:cursor-pointer transition-colors"> Kontak </button>
-                    <button onClick={() => document.getElementById('location')?.scrollIntoView({ behavior: 'smooth' })} className="hover:text-[#171717] hover:cursor-pointer transition-colors"> Lokasi </button>
+                    <button onClick = {() => document.getElementById('catalog')?.scrollIntoView({ behavior: 'smooth' })} className="hover:text-[#171717] hover:cursor-pointer transition-colors"> Katalog </button>
+                    <button onClick = {() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })} className="hover:text-[#171717] hover:cursor-pointer transition-colors"> Kontak </button>
+                    <button onClick = {() => document.getElementById('location')?.scrollIntoView({ behavior: 'smooth' })} className="hover:text-[#171717] hover:cursor-pointer transition-colors"> Lokasi </button>
                 </div>
                 <a
                     href = {getWhatsAppUrl()}
                     target = "_blank"
                     rel = "noopener noreferrer"
-                    className = "px-5 py-2.5 bg-[#171717] text-white text-sm font-bold rounded-full hover:bg-gray-800 transition shadow-lg active:scale-95">
+                    className = "hidden lg:inline-flex px-5 py-2.5 bg-[#171717] text-white text-sm font-bold rounded-full hover:bg-gray-800 transition shadow-lg active:scale-95">
                         Pesan Sekarang
                 </a>
+                <button
+                    onClick={() => setMobileMenuOpen((v) => !v)}
+                    className="lg:hidden p-2 rounded-lg text-[#171717] hover:bg-gray-200 transition"
+                    aria-label={mobileMenuOpen ? "Tutup menu" : "Buka menu"}
+                >
+                    {mobileMenuOpen ? (
+                        <svg className = "w-6 h-6" fill = "none" stroke = "currentColor" viewBox = "0 0 24 24">
+                            <path strokeLinecap = "round" strokeLinejoin = "round" strokeWidth = {2} d = "M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    ) : (
+                        <svg className = "w-6 h-6" fill = "none" stroke = "currentColor" viewBox = "0 0 24 24">
+                            <path strokeLinecap = "round" strokeLinejoin = "round" strokeWidth = {2} d = "M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    )}
+                </button>
             </div>
+
+            {mobileMenuOpen && (
+                <div className = "lg:hidden bg-[#EFE8E8] border-t border-gray-200 px-6 py-4 flex flex-col gap-1">
+                    {[
+                        { label: "Beranda", id: undefined },
+                        { label: "Katalog", id: "catalog" },
+                        { label: "Kontak", id: "contact" },
+                        { label: "Lokasi", id: "location" },
+                    ].map(({ label, id }) => (
+                        <button
+                            key = {label}
+                            onClick = {() => scrollTo(id)}
+                            className = "text-left w-full py-3 px-2 text-base font-semibold text-gray-600 hover:text-[#171717] hover:bg-gray-100 rounded-lg transition-colors"
+                        >
+                            {label}
+                        </button>
+                    ))}
+                    <a
+                        href = {getWhatsAppUrl()}
+                        target= "_blank"
+                        rel = "noopener noreferrer"
+                        className = "mt-2 flex items-center justify-center gap-2 px-5 py-3 bg-[#171717] text-white text-sm font-bold rounded-full hover:bg-gray-800 transition shadow active:scale-95"
+                    >
+                        Pesan Sekarang
+                    </a>
+                </div>
+            )}
         </nav>
-        <section id = "home" className = "relative min-h-[90vh] flex flex-col justify-center px-6 md:px-20 py-20 overflow-hidden">
-            <div className = "max-w-7xl mx-auto w-full grid md:grid-cols-2 gap-12 items-center">
-                <div className = "order-2 md:order-1 space-y-8 z-10 text-center md:text-left">
-                    <h1 className = "text-6xl md:text-8xl font-sansita leading-[1.1] drop-shadow-sm">
+        <section id = "home" className = "relative min-h-[90vh] flex flex-col justify-center px-6 md:px-20 pt-24 pb-16 md:pt-28 md:pb-20 overflow-hidden">
+            <div className = "max-w-7xl mx-auto w-full grid md:grid-cols-2 gap-10 md:gap-12 items-center">
+                <div className = "order-2 md:order-1 space-y-6 md:space-y-8 z-10 text-center md:text-left">
+                    <h1 className = "text-5xl sm:text-6xl md:text-8xl font-sansita leading-[1.1] drop-shadow-sm">
                         Ramot Florist
                     </h1>
-                    <p className = "text-lg md:text-xl text-gray-600 max-w-lg mx-auto md:mx-0">
+                    <p className = "text-base sm:text-lg md:text-xl text-gray-600 max-w-lg mx-auto md:mx-0 leading-relaxed">
                         📍 Terletak di Medan | 🗓 Melayani sejak 2020.
                         Menyediakan berbagai pilihan papan bunga ucapan (Wedding, Grand Opening, Duka Cita, dll) dengan desain eksklusif dan layanan pengiriman tepat waktu. Hubungi kami untuk pesanan yang berkesan!
                     </p>
-                    <div className = "flex justify-center w-full max-w-lg mx-auto md:mx-0">
+                    <div className = "flex justify-center md:justify-start">
                         <button
-                            onClick = {() => document.getElementById('catalog')?.scrollIntoView({ behavior: 'smooth' })}
-                            className = "group relative inline-flex items-center justify-center px-8 py-3 bg-[#171717] text-[#EFE8E8] rounded-full font-semibold overflow-hidden transition-transform active:scale-95 shadow-xl hover:cursor-pointer"
-                        >   
-                            <span className = "relative z-10 group-hover:text-white transition-colors">Jelajah Koleksi</span>
-                            <div className = "absolute inset-0 bg-gray-800 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></div>
+                            onClick = {() => scrollTo("catalog")}
+                            className = "group relative inline-flex items-center justify-center w-full sm:w-auto px-8 py-3.5 bg-[#171717] text-[#EFE8E8] rounded-full font-semibold overflow-hidden transition-transform active:scale-95 shadow-xl cursor-pointer"
+                        >
+                            <span className = "relative z-10 group-hover:text-white transition-colors"> Jelajah Koleksi </span>
+                            <div className = "absolute inset-0 bg-gray-800 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300" />
                         </button>
                     </div>
                 </div>
                 <div className = "order-1 md:order-2 flex justify-center relative w-full">
-                    <div className = "relative w-full max-w-62.5 md:max-w-95 aspect-4/5 rounded-t-[150px] border-4 border-white shadow-2xl overflow-hidden bg-white">
-                        <Image 
-                            src="/Hero.webp" 
-                            alt="Ramot Florist Storefront" 
-                            fill 
-                            className="object-cover" 
-                            priority 
-                            sizes="(max-width: 768px) 100vw, 320px" 
+                    <div className = "relative w-50 sm:w-62.5 md:w-full md:max-w-95 aspect-4/5 rounded-t-[150px] border-4 border-white shadow-2xl overflow-hidden bg-white">
+                        <Image
+                            src = "/Hero.webp"
+                            alt = "Ramot Florist Storefront"
+                            fill
+                            className = "object-cover"
+                            priority
+                            sizes = "(max-width: 640px) 200px, (max-width: 768px) 250px, 380px"
                         />
                     </div>
                 </div>
@@ -105,7 +168,7 @@ return (
         <section id = "catalog" className = "relative py-24 overflow-hidden bg-[#E5DEDE]">
             <div className = "relative z-10 max-w-6xl mx-auto px-6">
                 <SectionTitle title = "Catalogue" subtitle = "Find the Perfect Board"/>
-                <div className = "mt-16 grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16">
+                <div className = "mt-12 md:mt-16 grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-12 md:gap-y-16">
                     {PRODUCTS.slice(0, visibleCount).map((product) => (
                         <ProductCard
                             key = {product.id}
@@ -119,10 +182,10 @@ return (
                 </div>
 
                 {visibleCount < PRODUCTS.length && (
-                    <div className = "text-center mt-24">
+                    <div className = "text-center mt-16 md:mt-24">
                         <button
                             onClick = {() => setVisibleCount((p) => p + 4)}
-                            className = "px-10 py-4 border-2 border-[#171717] text-[#171717] rounded-full font-bold uppercase tracking-widest hover:bg-[#171717] hover:text-white transition-all active:scale-95"
+                            className = "w-full sm:w-auto px-10 py-4 border-2 border-[#171717] text-[#171717] rounded-full font-bold uppercase tracking-widest hover:bg-[#171717] hover:text-white transition-all active:scale-95"
                         >
                             Muat Lebih Banyak
                         </button>
@@ -131,28 +194,30 @@ return (
             </div>  
         </section>
 
-        <section id = "contact" className = "py-32 px-6 bg-[#EFE8E8] text-center">
-            <div className = "max-w-3xl mx-auto space-y-8">
+        <section id = "contact" className = "py-20 md:py-32 px-6 bg-[#EFE8E8] text-center">
+            <div className = "max-w-3xl mx-auto space-y-6 md:space-y-8">
                 <SectionTitle title = "Cara Pemesanan" subtitle = "Kontak Kami" />
-                <p className = "text-lg md:text-xl text-gray-600 leading-relaxed">
+                <p className = "text-base md:text-xl text-gray-600 leading-relaxed text-center">
                     Untuk membahas mengenai pemesanan, silakan hubungi kami melalui WhatsApp. Klik tombol di bawah untuk memulai percakapan dengan tim kami, dan kami akan dengan senang hati membantu Anda memilih papan bunga yang sempurna untuk acara Anda! Kami juga menerima pemesanan area sekitar Medan.
                 </p>
-                <a
-                    href = {getWhatsAppUrl()}
-                    target = "_blank"
-                    rel = "noopener noreferrer"
-                    className = "mt-8 inline-flex items-center gap-3 px-8 py-4 bg-green-700 text-white rounded-full font-bold hover:bg-green-600 transition-all shadow-lg hover:shadow-green-900/50 active:scale-95"
-                >
-                    <WhatsAppIcon/>
-                    <span> Diskusi Lebih Lanjut </span>
-                </a>
+                <div className = "flex justify-center px-4 sm:px-0">
+                    <a
+                        href = {getWhatsAppUrl()}
+                        target = "_blank"
+                        rel = "noopener noreferrer"
+                        className = "w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 bg-green-700 text-white rounded-full font-bold hover:bg-green-600 transition-all shadow-lg hover:shadow-green-900/50 active:scale-95"
+                    >
+                        <WhatsAppIcon/>
+                        <span> Diskusi Lebih Lanjut </span>
+                    </a>
+                </div>
             </div>
         </section>
 
-        <footer id = "location" className="relative text-[#171717] py-16 px-6 overflow-hidden bg-[#E5DEDE]">
+        <footer id = "location" className = "relative text-[#171717] py-12 md:py-16 px-6 overflow-hidden bg-[#E5DEDE]">
             <div className = "relative z-10 max-w-6xl mx-auto">
-                <div className = "grid md:grid-cols-2 gap-12 items-center">
-                    <div className = "w-full h-64 md:h-80 rounded-2xl overflow-hidden shadow-lg border-2 border-white/50 bg-white">
+                <div className = "grid md:grid-cols-2 gap-10 md:gap-12 items-center">
+                    <div className = "w-full h-56 sm:h-64 md:h-80 rounded-2xl overflow-hidden shadow-lg border-2 border-white/50 bg-white">
                         <iframe 
                             src = "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3982.25099702366!2d98.6197!3d3.5294!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x303125776c6e8601%3A0xa83c925dc35f9898!2sJl.%20Setia%20Budi%20No.32%2C%20Simpang%20Selayang%2C%20Kec.%20Medan%20Tuntungan%2C%20Kota%20Medan%2C%20Sumatera%20Utara%2020135!5e0!3m2!1sen!2sid!4v1772374151826!5m2!1sen!2sid"
                             width = "100%" 
@@ -163,68 +228,68 @@ return (
                             referrerPolicy = "no-referrer-when-downgrade"
                             title = "Ramot Florist Location"
                             sandbox = "allow-scripts allow-same-origin allow-popups"
-                        ></iframe>
+                        />
                     </div>    
-                    <div className = "flex flex-col items-center md:items-start text-center md:text-left space-y-6">
-                        <h2 className = "text-4xl md:text-5xl font-sansita"> Ramot Florist </h2>
-                        <p className = "text-gray-600 leading-relaxed max-w-md pb-4">
+                    <div className = "flex flex-col items-start text-left space-y-5 md:space-y-6">
+                        <h2 className = "text-3xl md:text-5xl font-sansita"> Ramot Florist </h2>
+                        <p className = "text-gray-600 leading-relaxed max-w-md text-sm md:text-base">
                             Berlokasi strategis di medan untuk melayani segala kebutuhan bunga Anda. Anda dapat menemukan kami di:
                         </p>
 
-                        <div className = "space-y-4 text-gray-700 font-medium w-full max-w-sm">
-                            <div className = "flex items-center gap-4 justify-center md:justify-start">
-                                <div className = "p-2 bg-white rounded-full shadow-sm text-green-700">
-                                    <svg className = "w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.242-4.243a8 8 0 1111.314 0z"/><path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                        <div className = "space-y-3 md:space-y-4 text-gray-700 font-medium w-full max-w-sm">
+                            <div className = "flex items-start gap-4 justify-start">
+                                <div className = "p-2 bg-white rounded-full shadow-sm text-green-700 shrink-0 mt-0.5">
+                                    <svg className = "w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth = "2"><path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.242-4.243a8 8 0 1111.314 0z"/><path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                                 </div>
-                                <span className = "text-left"> Jl. Setia Budi No.32, Simpang Selayang, Kec. Medan Tuntungan, Kota Medan, Sumatera Utara 20135, Indonesia </span>
+                                <span className = "text-left text-sm md:text-base"> Jl. Setia Budi No.32, Simpang Selayang, Kec. Medan Tuntungan, Kota Medan, Sumatera Utara 20135, Indonesia </span>
                             </div>
                             
-                            <div className = "flex items-center gap-4 justify-center md:justify-start">
-                                <div className = "p-2 bg-white rounded-full shadow-sm text-green-700">
+                            <div className = "flex items-center gap-4 justify-start">
+                                <div className = "p-2 bg-white rounded-full shadow-sm text-green-700 shrink-0">
                                     <svg className = "w-5 h-5" fill = "none" stroke = "currentColor" viewBox = "0 0 24 24" strokeWidth = "2"><path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                                 </div>
-                                <a href = "mailto:ramotflorist@gmail.com" className = "text-left hover:underline"> ramotflorist@gmail.com </a>
+                                <a href = "mailto:ramotflorist@gmail.com" className = "text-left hover:underline text-sm md:text-base"> ramotflorist@gmail.com </a>
                             </div>
 
-                            <div className = "flex items-center gap-4 justify-center md:justify-start">
-                                <div className = "p-2 bg-white rounded-full shadow-sm text-green-700">
+                            <div className = "flex items-center gap-4 justify-start">
+                                <div className = "p-2 bg-white rounded-full shadow-sm text-green-700 shrink-0">
                                     <WhatsAppIcon/>
                                 </div>
-                                <span className = "text-left"> +62 821-9129-5376 </span>
+                                <span className = "text-left text-sm md:text-base"> +62 821-9129-5376 </span>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div className = "mt-16 pt-8 border-t border-gray-300 text-center">
+                <div className = "mt-12 md:mt-16 pt-8 border-t border-gray-300 text-center">
                     <p className = "text-xs text-gray-500"> © {new Date().getFullYear()} Ramot Florist. All rights reserved. </p>
                 </div>
             </div>
         </footer>
 
         {SelectedProduct && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8"
+            <div className = "fixed inset-0 z-50 flex items-center justify-center p-3 md:p-8"
                 role = "dialog"
-                aria-model = "true"
+                aria-modal = "true"
                 aria-label = {`Product detail: ${SelectedProduct.name}`}
             >
-                <div className = "absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
+                <div className = "absolute inset-0 bg-black/60 backdrop-blur-sm"
                     onClick={() => setSelectedProduct(null)}
                     aria-hidden = "true"
-                    />  
-                <div className = "relative bg-[#EFE8E8] w-full max-w-4xl rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row animate-in fade-in zoom-in duration-200 max-h-[95vh] overflow-y-auto">            
-                    <button onClick = {() => setSelectedProduct(null)} className = "absolute top-4 right-4 p-2 bg-white/80 hover:bg-white rounded-full z-20 transition shadow-sm cursor-pointer text-[#171717]"> ✕ </button>
-                    <div className = "w-full md:w-1/2 relative bg-[#E5DEDE] overflow-hidden group min-h-87.5 md:min-h-125">
+                />  
+                <div className = "relative bg-[#EFE8E8] w-full max-w-4xl rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row max-h-[92vh] overflow-y-auto">            
+                    <button onClick = {() => setSelectedProduct(null)} className = "absolute top-3 right-3 p-2 bg-white/80 hover:bg-white rounded-full z-20 transition shadow-sm cursor-pointer text-[#171717]"> ✕ </button>
+                    <div className = "w-full md:w-1/2 relative bg-[#E5DEDE] overflow-hidden min-h-65 sm:min-h-85 md:min-h-125">
                         <div 
                             className = "flex w-full h-full absolute inset-0 transition-transform duration-500 ease-in-out"
                             style = {{ transform: `translateX(-${modalImageIndex * 100}%)` }}
                         >
                             {SelectedProduct.images.map((img, idx) => (
-                                <div key = {idx} className="relative w-full h-full shrink-0">
+                                <div key = {idx} className = "relative w-full h-full shrink-0">
                                     <Image 
                                         src = {img} 
                                         alt = {`${SelectedProduct.name} - Image ${idx + 1}`} 
                                         fill 
-                                        className = "object-contain p-8 drop-shadow-xl"
+                                        className = "object-contain p-6 md:p-8 drop-shadow-xl"
                                         sizes = "(max-width: 768px) 100vw, 50vw"
                                     />
                                 </div>
@@ -234,17 +299,17 @@ return (
                             <>
                                 <button 
                                     onClick = {() => setModalImageIndex((p) => (p - 1 + SelectedProduct.images.length) % SelectedProduct.images.length)} 
-                                    className = "absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-3 rounded-full shadow-lg z-10 transition cursor-pointer text-gray-800"
+                                    className = "absolute left-3 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-2.5 rounded-full shadow-lg z-10 transition cursor-pointer text-gray-800"
                                 >
-                                    <svg className = "w-5 h-5" fill = "none" stroke = "currentColor" viewBox="0 0 24 24"><path strokeLinecap = "round" strokeLinejoin = "round" strokeWidth = {2} d = "M15 19l-7-7 7-7" /></svg>
+                                    <svg className = "w-4 h-4 md:w-5 md:h-5" fill = "none" stroke = "currentColor" viewBox="0 0 24 24"><path strokeLinecap = "round" strokeLinejoin = "round" strokeWidth = {2} d = "M15 19l-7-7 7-7" /></svg>
                                 </button>
                                 <button 
                                     onClick = {() => setModalImageIndex((p) => (p + 1) % SelectedProduct.images.length)} 
-                                    className = "absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-3 rounded-full shadow-lg z-10 transition cursor-pointer text-gray-800"
+                                    className = "absolute right-3 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-2.5 rounded-full shadow-lg z-10 transition cursor-pointer text-gray-800"
                                 >
-                                    <svg className = "w-5 h-5" fill = "none" stroke = "currentColor" viewBox = "0 0 24 24"><path strokeLinecap = "round" strokeLinejoin = "round" strokeWidth = {2} d = "M9 5l7 7-7 7" /></svg>
+                                    <svg className = "w-4 h-4 md:w-5 md:h-5" fill = "none" stroke = "currentColor" viewBox = "0 0 24 24"><path strokeLinecap = "round" strokeLinejoin = "round" strokeWidth = {2} d = "M9 5l7 7-7 7" /></svg>
                                 </button>
-                                <div className = "absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+                                <div className = "absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2 z-10">
                                     {SelectedProduct.images.map((_, idx) => (
                                         <div key = {idx} className = {`w-2 h-2 rounded-full transition-colors ${idx === modalImageIndex ? 'bg-green-700' : 'bg-gray-300'}`} />
                                     ))}
@@ -252,13 +317,13 @@ return (
                             </>
                         )}
                     </div>
-                    <div className = "w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center space-y-6">
+                    <div className = "w-full md:w-1/2 p-6 md:p-12 flex flex-col justify-center space-y-5 md:space-y-6">
                         <div>
-                            <h2 className = "text-4xl font-sansita text-[#171717] mb-2"> {SelectedProduct.name} </h2>
-                            <div className = "w-12 h-1 bg-green-800 rounded-full mb-4"></div>
-                            <p className = "text-3xl font-bold text-green-800"> {SelectedProduct.price} </p>
+                            <h2 className = "text-2xl md:text-4xl font-sansita text-[#171717] mb-2"> {SelectedProduct.name} </h2>
+                            <div className = "w-12 h-1 bg-green-800 rounded-full mb-3 md:mb-4"></div>
+                            <p className = "text-2xl md:text-3xl font-bold text-green-800"> {SelectedProduct.price} </p>
                         </div>
-                        <a href = {getWhatsAppUrl()} target = "_blank" className = "inline-flex items-center justify-center gap-2 mt-4 px-8 py-4 bg-green-700 text-white rounded-full font-bold hover:bg-green-600 transition shadow-lg active:scale-95 w-full md:w-auto">
+                        <a href = {getWhatsAppUrl()} target = "_blank" className = "inline-flex items-center justify-center gap-2 px-8 py-4 bg-green-700 text-white rounded-full font-bold hover:bg-green-600 transition shadow-lg active:scale-95 w-full">
                             <WhatsAppIcon/>
                             Order via WhatsApp
                         </a>
@@ -281,11 +346,11 @@ function WhatsAppIcon() {
 function SectionTitle({ title, subtitle } : { title: string, subtitle: string }) {
     return (
         <div className = "text-center space-y-2">
-            <h2 className = "text-4xl md:text-5xl font-sansita text-[#171717]">
+            <h2 className = "text-3xl md:text-5xl font-sansita text-[#171717]">
                 {title}
             </h2>
             <div className = "h-1 w-20 bg-[#171717] mx-auto rounded-full"></div>
-            <p className = "text-gray-500 font-medium uppercase tracking-wider text-sm"> {subtitle} </p>
+            <p className = "text-gray-500 font-medium uppercase tracking-wider text-xs md:text-sm"> {subtitle} </p>
         </div>
     );
 }
@@ -304,7 +369,7 @@ function ProductCard({ product, onClick } : { product: Product, onClick: () => v
     };
 
     return (
-        <div className = "group flex flex-col items-center space-y-5 h-full">
+        <div className = "group flex flex-col items-center space-y-4 h-full">
             <div 
                 onClick = {onClick}
                 className = "relative w-full aspect-3/2 cursor-pointer rounded-xl overflow-hidden"
@@ -357,12 +422,12 @@ function ProductCard({ product, onClick } : { product: Product, onClick: () => v
             <div className = "w-full text-center space-y-2 px-4 grow">
                 <h3 
                     onClick = {onClick}
-                    className = "text-2xl md:text-3xl font-sansita text-[#171717] group-hover:text-green-800 transition-colors cursor-pointer line-clamp-2"
+                    className = "text-xl md:text-3xl font-sansita text-[#171717] group-hover:text-green-800 transition-colors cursor-pointer line-clamp-2"
                 >
                     {product.name}
                 </h3>
-                <p className = "text-xl font-bold text-gray-800"> {product.price} </p>
-                <div onClick = {onClick} className = "inline-block text-green-800 font-semibold pt-1 cursor-pointer hover:underline"> 
+                <p className = "text-lg md:text-xl font-bold text-gray-800"> {product.price} </p>
+                <div onClick = {onClick} className = "inline-block text-green-800 font-semibold pt-1 cursor-pointer hover:underline text-sm md:text-base"> 
                     Lihat Detail
                 </div>
             </div>
