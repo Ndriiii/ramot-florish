@@ -65,7 +65,7 @@ export default function Home() {
     const handleConversionTrack = () => {
         if (typeof window !== "undefined" && window.gtag) {
         window.gtag('event', 'conversion', {
-            'send_to': 'AW-18139077658/LABEL_KONVERSI_ANDA' // <-- GANTI LABEL INI
+            'send_to': 'AW-18139077658/QHGMCP27wqccEJq4sclD' // <-- GANTI LABEL INI
         });
         }
     };
