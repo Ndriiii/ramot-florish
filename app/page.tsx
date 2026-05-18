@@ -30,7 +30,7 @@ const PRODUCTS: Product[] = [
     { id: 2, name: "Papan Bunga Jumbo 02", category: "Papan Bunga", images: ["/Jumbo 1.webp"]},
     { id: 3, name: "Papan Bunga Jumbo 03", category: "Papan Bunga", images: ["/Jumbo 2.webp"]},
     { id: 4, name: "Papan Bunga Jumbo 04", category: "Papan Bunga", images: ["/Jumbo 3.webp"]},
-    { id: 5, name: "Papan Bunga Jumbo 05", category: "Papan Bunga", images: ["/jgitumbo 4.webp"]},
+    { id: 5, name: "Papan Bunga Jumbo 05", category: "Papan Bunga", images: ["/jumbo 4.webp"]},
     { id: 6, name: "Papan Jakarta 01", category: "Papan Bunga", images: ["/PapanJakarta.webp"]},
     { id: 7, name: "Papan Jakarta 02", category: "Papan Bunga", images: ["/JakartaFresh.webp"]},
     { id: 8, name: "Papan Jakarta 03", category: "Papan Bunga", images: ["/Papan Jakarta 2.webp"]},
